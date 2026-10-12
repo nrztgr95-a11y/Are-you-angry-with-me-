@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Are You Angry With Me? 💗</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #ffd6e7, #ffeaf2, #ffc2d8);
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -50px;
+      animation: floatUp linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes floatUp {
+      to {
+        transform: translateY(-115vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(90%, 430px);
+      padding: 35px 22px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 15px 50px rgba(190, 55, 105, 0.2);
+      text-align: center;
+      border: 2px solid white;
+    }
+
+    .emoji {
+      font-size: 65px;
+      margin-bottom: 15px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      50% { transform: translateY(-8px); }
+    }
+
+    h1 {
+      color: #d63376;
+      font-size: clamp(25px, 6vw, 34px);
+      margin-bottom: 12px;
+    }
+
+    p {
+      color: #805064;
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .arena {
+      position: relative;
+      height: 100px;
+      width: 100%;
+    }
+
+    button {
+      position: absolute;
+      top: 15px;
+      min-width: 105px;
+      padding: 13px 24px;
+      border: none;
+      border-radius: 30px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #yes {
+      left: 12%;
+      background: #ff4d88;
+      color: white;
+    }
+
+    #no {
+      left: 56%;
+      background: #f3edf0;
+      color: #805064;
+    }
+
+    .footer {
+      color: #c56b8d;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    .success .emoji {
+      font-size: 80px;
+    }
+
+    .success h1 {
+      font-size: 32px;
+    }
+
+    .success p {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        padding: 28px 16px;
+      }
+
+      button {
+        min-width: 95px;
+        padding: 12px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <main class="card" id="card">
+    <div class="emoji">🥺💗</div>
+
+    <h1>Are you angry with me?</h1>
+
+    <p>
+      Be honest with me, my babe... 🥹<br>
+      Are you still angry at your silly person? 💕
+    </p>
+
+    <div class="arena" id="arena">
+      <button id="yes" type="button">Yes 😡</button>
+      <button id="no" type="button">No 🥰</button>
+    </div>
+
+    <div class="footer">Made with love, just for you 💖</div>
+  </main>
+
+  <script>
+    const yes = document.getElementById("yes");
+    const no = document.getElementById("no");
+    const arena = document.getElementById("arena");
+    const card = document.getElementById("card");
+
+    // YES runs away when the mouse hovers over it.
+    function moveYes() {
+      const maxX = arena.clientWidth - yes.offsetWidth;
+      const maxY = arena.clientHeight - yes.offsetHeight;
+
+      yes.style.left = Math.random() * Math.max(0, maxX) + "px";
+      yes.style.top = Math.random() * Math.max(0, maxY) + "px";
+    }
+
+    yes.addEventListener("mouseenter", moveYes);
+
+    // On mobile, YES runs away when someone tries to touch it.
+    yes.addEventListener("touchstart", function(event) {
+      event.preventDefault();
+      moveYes();
+    }, { passive: false });
+
+    // Clicking YES does absolutely nothing.
+    yes.addEventListener("click", function(event) {
+      event.preventDefault();
+    });
+
+    // NO never moves. Clicking it displays the thank-you message.
+    no.addEventListener("click", function() {
+      card.classList.add("success");
+
+      card.innerHTML = `
+        <div class="emoji">🥹💖</div>
+        <h1>Thank You, My Babe! 💗</h1>
+        <p>
+          Awww, thank you for not being angry with me, my babe! 🥺💕<br><br>
+          You mean the whole world to me, and I never want to be
+          the reason behind your tears. I love you so much, my babe! 🫶💋
+        </p>
+      `;
+    });
+
+    // Floating hearts
+    const heartBox = document.getElementById("hearts");
+    const symbols = ["💗", "💕", "💖", "💘", "💞"];
+
+    for (let i = 0; i < 24; i++) {
+      const heart = document.createElement("span");
+      heart.className = "heart";
+      heart.textContent = symbols[
+        Math.floor(Math.random() * symbols.length)
+      ];
+
+      heart.style.left = Math.random() * 100 + "%";
+      heart.style.animationDuration = (5 + Math.random() * 8) + "s";
+      heart.style.animationDelay = (Math.random() * 8) + "s";
+      heart.style.fontSize = (15 + Math.random() * 20) + "px";
+
+      heartBox.appendChild(heart);
+    }
+  </script>
+</body>
+</html>
